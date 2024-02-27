@@ -6,7 +6,7 @@ import numpy as np
 import tiktoken
 
 # add your OpenAI apikey
-openai.api_key = ""
+openai.api_key = "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"
 
 # read csv and parse into DF. Merge first seven colunns into a single column
 df = pd.read_csv('Food_Scrap_Drop-Off_Locations_in_NYC.csv')
@@ -164,40 +164,56 @@ def answer_question(
         print(e)
         return ""
 
-# baseline model answer
-    
-user_prompt = """
-Question: "Where can I drop off food scrapes in the Bronx on a Sunday?"
-Answer:
-"""
-initial_user_answer = openai.Completion.create(
-    model="gpt-3.5-turbo-instruct",
-    prompt=user_prompt,
-    max_tokens=150
-)["choices"][0]["text"].strip()
-print("\nBaseline question: Where can I drop off food scrapes in the Bronx on a Sunday? \n")
-print("Baseline model answer: \n\n"+initial_user_answer+ "\n")
+# function for baseline answer
 
-# list of test prompts
-new_prompts = [
-    "What are the food scrap drop-off options available in Brooklyn on a Sunday?",
-    "Can you list any food scrap drop-off locations in Manhattan?",
-    "Are there food scrap drop-off locations in the Bronx that are open 24/7?",
-    "What food scrap drop-off services are available in Staten Island?",
-    "I live in Queens, any food scrapes locations around me?"
+def get_baseline_answer(question):
+    """
+    Generate a baseline answer for a given question using the GPT-3.5-turbo-instruct model.
+    """
+    try:
+        response = openai.Completion.create(
+            model="gpt-3.5-turbo-instruct",
+            prompt=f"Question: {question}\nAnswer:",
+            max_tokens=150
+        )
+        return response["choices"][0]["text"].strip()
+    except Exception as e:
+        print(e)
+        return "An error occurred while generating the baseline answer."
+
+# Function for Q&A pairs baseline and improved
+
+def generate_qa_pairs(prompts, df):
+    """
+    For each prompt, generate Q&A pairs for both baseline and improved answers.
+    """
+    qa_pairs = []
+    for prompt in prompts:
+        # Get baseline answer
+        baseline_answer = get_baseline_answer(prompt)
+        
+        # Get improved answer
+        df = add_question_embeddings_and_sort(df, prompt)
+        improved_answer = answer_question(prompt, df)
+        
+        # Append both Q&A pairs
+        qa_pairs.append({
+            "question": prompt,
+            "baseline_answer": baseline_answer,
+            "improved_answer": improved_answer
+        })
+    return qa_pairs
+
+# Example usage
+my_prompts = [
+    "Where can I drop off food scrapes in the Bronx on a Friday?",
+    "Cam I drop of my food scraps in Brooklyn on a Sunday, if Yes when and where?"
+    # Add more prompts as needed
 ]
 
-# Function to iterate through the prompts and get answers
-def get_answers_for_prompts(prompts, df):
-    answers = []
-    for prompt in prompts:
-        df=add_question_embeddings_and_sort(df,prompt)
-        answer = answer_question(prompt, df)
-        answers.append((prompt, answer))
-    return answers
-
-# Call the function and print the answers
-answers = get_answers_for_prompts(new_prompts, df)
-for prompt, answer in answers:
-    print(f"Prompt: {prompt}\nAnswer: {answer}\n\n")
-
+# Call the function and print the Q&A pairs
+qa_pairs = generate_qa_pairs(my_prompts, df)
+for pair in qa_pairs:
+    print(f"\nQuestion: {pair['question']}")
+    print(f"\nBaseline Answer:\n {pair['baseline_answer']}")
+    print(f"\nImproved Answer:\n {pair['improved_answer']}\n")

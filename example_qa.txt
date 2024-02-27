@@ -1,0 +1,22 @@
+Question: Where can I drop off food scrapes in the Bronx on a Friday?
+
+Baseline Answer:
+ You can drop off food scrapes in the Bronx on a Friday at any of the following locations:
+
+1. Bronx Community Compost Drop-Off at Fordham Plaza Greenmarket - Located at E Fordham Rd & 3rd Avenue, Bronx, NY 10458. Open 7 AM-4 PM.
+
+2. Brox Community Compost Drop-Off at Jackson Farmers' Market - Located at E 149th St & Jackson Ave, Bronx, NY 10456. Open 8 AM-2 PM.
+
+3. GrowNYC Compost Drop-Off at Grand Concourse Greenmarket - Located at Grand Concourse between 161st and 162nd Street, Bronx, NY 10452. Open 8 AM-3
+
+Improved Answer:
+ Bronx Belmont Fordham Plaza Food Scrap Drop-off E Fordham Rd between Webster Ave & Third Ave
+
+
+Question: Cam I drop of my food scraps in Brooklyn on a Sunday, if Yes when and where?
+
+Baseline Answer:
+ It is possible to drop off food scraps in Brooklyn on a Sunday, but the availability and hours may vary depending on the specific location. It is best to check with local composting or community gardens to see if they accept drop-offs on Sundays and for their specific hours. Some options may include Prospect Heights Community Farm, Citybugs Compost, or Red Hook Community Farm.
+
+Improved Answer:
+ Yes on Sundays from 11:30 AM to 1:00 PM at Transmitter Park located at 2 Greenpoint Ave and West Street.
