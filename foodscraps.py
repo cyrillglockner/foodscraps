@@ -6,7 +6,7 @@ import numpy as np
 import tiktoken
 
 # add your OpenAI apikey
-openai.api_key = ""
+openai.api_key = "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"
 
 # read csv and parse into DF. Merge first seven colunns into a single column
 df = pd.read_csv('Food_Scrap_Drop-Off_Locations_in_NYC.csv')
@@ -16,7 +16,23 @@ df = df[['text']].copy()
 # filter `data` based on the content of 'text' column
 df = df[df['text'].str.len() > 0]  #remove any rows where 'text' is empty
 
-# calculate cosin of embeddings and sort results
+# Create embeddings and add to dataframe
+
+EMBEDDING_MODEL_NAME = "text-embedding-ada-002"
+batch_size = 100
+embeddings = []
+for i in range(0, len(df), batch_size):
+    # Send text data to OpenAI model to get embeddings
+    response = openai.Embedding.create(
+        input=df.iloc[i:i+batch_size]["text"].tolist(),
+        engine=EMBEDDING_MODEL_NAME
+    )
+
+    # Add embeddings to list
+
+    embeddings.extend([data["embedding"] for data in response["data"]])
+
+df["embedding"] = embeddings
 
 def get_rows_sorted_by_relevance(question, df):
     """
@@ -42,26 +58,6 @@ def get_rows_sorted_by_relevance(question, df):
     # (shorter distance = more relevant so we sort in ascending order)
     df_copy.sort_values("distances", ascending=True, inplace=True)
     return df_copy
-
-from dateutil.parser import parse
-
-# Create embeddings and add to dataframe
-
-EMBEDDING_MODEL_NAME = "text-embedding-ada-002"
-batch_size = 100
-embeddings = []
-for i in range(0, len(df), batch_size):
-    # Send text data to OpenAI model to get embeddings
-    response = openai.Embedding.create(
-        input=df.iloc[i:i+batch_size]["text"].tolist(),
-        engine=EMBEDDING_MODEL_NAME
-    )
-
-    # Add embeddings to list
-
-    embeddings.extend([data["embedding"] for data in response["data"]])
-
-df["embedding"] = embeddings
 
 def add_question_embeddings_and_sort(df, user_question):
     """
