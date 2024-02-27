@@ -6,7 +6,7 @@ import numpy as np
 import tiktoken
 
 # add your OpenAI apikey
-openai.api_key = "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"
+openai.api_key = ""
 
 # read csv and parse into DF. Merge first seven colunns into a single column
 df = pd.read_csv('Food_Scrap_Drop-Off_Locations_in_NYC.csv')
