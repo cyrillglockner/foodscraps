@@ -9,9 +9,9 @@ Drop-off composting is one way residents can put their food and yard waste to go
 
 # Files in the repo
 
-foodscraps.py - answers a user question using the baseline model 'gpt-3.5-turbo-instruct' and then five more questions using the dataset embeddings in conection with the baseline model
-requirements.txt - needed python libraries. Install using 'pip install -r requirements.txt'
-Food_Scrap_Drop-Off_Locations_in_NYC.csv - datafile containing food scrap location (Feb 2024).
+- foodscraps.py - answers a user question using the baseline model 'gpt-3.5-turbo-instruct' and then five more questions using the dataset embeddings in conection with the baseline model
+- requirements.txt - needed python libraries. Install using 'pip install -r requirements.txt'
+- Food_Scrap_Drop-Off_Locations_in_NYC.csv - datafile containing food scrap location (Feb 2024).
 
 # Room for improvement. 
 
