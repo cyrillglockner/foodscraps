@@ -100,8 +100,6 @@ def add_question_embeddings_and_sort(df, user_question):
 
 # Custom prompt creation
 
-import tiktoken 
-
 def create_prompt(question, df, max_token_count):
     """
     Given a question and a dataframe containing rows of text and their
