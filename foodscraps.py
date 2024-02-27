@@ -5,8 +5,8 @@ from openai.embeddings_utils import get_embedding, distances_from_embeddings
 import numpy as np
 import tiktoken
 
-
-openai.api_key = "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"
+# add your OpenAI apikey
+openai.api_key = ""
 
 # Read csv and parst into DF
 df = pd.read_csv('Food_Scrap_Drop-Off_Locations_in_NYC.csv')
