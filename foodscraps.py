@@ -8,7 +8,7 @@ import tiktoken
 # add your OpenAI apikey
 openai.api_key = ""
 
-# Read csv and parst into DF
+# read csv and parse into DF. Merge first seven colunns into a single column
 df = pd.read_csv('Food_Scrap_Drop-Off_Locations_in_NYC.csv')
 df['text'] = df.iloc[:, :7].apply(lambda row: ' '.join(row.values.astype(str)), axis=1)
 df = df[['text']].copy()  
@@ -45,9 +45,6 @@ def get_rows_sorted_by_relevance(question, df):
 
 from dateutil.parser import parse
 
-# Clean up text to remove empty lines and headings
-df = df[(df["text"].str.len() > 0)]
-
 # Create embeddings and add to dataframe
 
 EMBEDDING_MODEL_NAME = "text-embedding-ada-002"
@@ -61,7 +58,7 @@ for i in range(0, len(df), batch_size):
     )
 
     # Add embeddings to list
-    #print(response)
+
     embeddings.extend([data["embedding"] for data in response["data"]])
 
 df["embedding"] = embeddings
@@ -103,7 +100,7 @@ def add_question_embeddings_and_sort(df, user_question):
 
 # Custom prompt creation
 
-import tiktoken  # Ensure tiktoken is correctly installed and imported
+import tiktoken 
 
 def create_prompt(question, df, max_token_count):
     """
@@ -132,7 +129,7 @@ def create_prompt(question, df, max_token_count):
                           len(tokenizer.encode(question))
 
     context = []
-    for text in df.sort_values(by='distances', ascending=True)["text"].values:  # Assuming get_rows_sorted_by_relevance returns sorted DataFrame
+    for text in df.sort_values(by='distances', ascending=True)["text"].values:
         # Increase the counter based on the number of tokens in this row
         text_token_count = len(tokenizer.encode(text))
         current_token_count += text_token_count
@@ -161,7 +158,7 @@ def answer_question(
     """
 
     prompt = create_prompt(question, df, max_prompt_tokens)
-    #print(prompt)
+    
     try:
         response = openai.Completion.create(
             model=COMPLETION_MODEL_NAME,
@@ -184,6 +181,7 @@ initial_user_answer = openai.Completion.create(
     prompt=user_prompt,
     max_tokens=150
 )["choices"][0]["text"].strip()
+print("\nBaseline question: Where can I drop off food scrapes in the Bronx on a Sunday? \n")
 print("Baseline model answer: \n\n"+initial_user_answer+ "\n")
 
 # list of test prompts
