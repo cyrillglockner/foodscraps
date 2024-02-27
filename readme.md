@@ -1,7 +1,7 @@
 # Foodscrap location bot 
 
 This chatbot example is always up to date delivering food scrap location information based on the latest from 
-the NYC Open Data project. 
+the NYC Open Data project. I've chosen this dataset so the bot can answer the question more accurately than the GPT3.5 model alone. 
 
 # Background 
 
